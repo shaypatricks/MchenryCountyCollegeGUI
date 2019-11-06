@@ -1,8 +1,8 @@
 import os
 from io import BytesIO
 import PIL.Image as CoverArt
-
-
+import tinytag
+from sys import platform
 import threading
 import time
 import tkinter.messagebox
@@ -14,11 +14,21 @@ from tkinter import ttk
 from ttkthemes import themed_tk as tk
 
 from mutagen.mp3 import MP3
+from mutagen import File
 from pygame import mixer
 
 root = tk.ThemedTk()
-root.get_themes()                 # Returns a list of all themes that can be set
-root.set_theme("xpnative")        # Sets an available theme
+root.get_themes()  # Returns a list of all themes that can be set
+print(sys.platform)
+
+new_canvas = Canvas(root, width=200, height=200)
+
+if platform == "Mac OS X ":
+    root.set_theme("aqua")
+elif platform == "darwin":
+    root.set_theme("clam")
+elif platform == "Win10":
+    root.set_theme("xpnative")        # Sets an available theme
 
 
 # Fonts - Arial (corresponds to Helvetica), Courier New (Courier), Comic Sans MS, Fixedsys,
@@ -55,9 +65,12 @@ def add_to_playlist(filename):
     global index
     filename = os.path.basename(filename)
     index = 0
-    playlistbox.insert(index, filename)
-    playlist.insert(index, filename_path)
-    index += 1
+    if filename.endswith(".mp3"):
+        playlistbox.insert(index, filename)
+        playlist.insert(index, filename_path)
+        index += 1
+    else:
+        tkinter.messagebox.showerror('File not found', 'Melody could not load the file. Please check again.')
 
 
 def add_directory_to_playlist():
@@ -68,15 +81,12 @@ def add_directory_to_playlist():
         index = 0
         for files in os.listdir(directory):
             if files.endswith(".mp3"):
-
-                realdir = os.path.realpath(directory)
                 playlistbox.insert(index, files)
                 playlist.insert(index, files)
                 index += 1
 
     except:
         tkinter.messagebox.showerror('File not found', 'Melody could not load the directory. Please check again.')
-
 
 
 menuBar.add_cascade(label="File", menu=subMenu)
@@ -95,7 +105,7 @@ subMenu.add_command(label="About Us", command=about_us)
 mixer.init()  # initializing the mixer
 
 root.title("Melody")
-root.iconbitmap(r'C:\Users\steffen\PycharmProjects\GUI\Images\melody.ico')
+root.iconbitmap(r'Images\melody.ico')
 
 # Root Window - StatusBar, LeftFrame, RightFrame
 # LeftFrame - The listbox (playlist)
@@ -133,6 +143,9 @@ topFrame.pack()
 titleArtist = ttk.Label(topFrame, text="Title - Artist")
 titleArtist.pack(pady=5)
 
+trackAlbum = ttk.Label(topFrame, text="Track - Album")
+trackAlbum.pack(pady=5)
+
 length_label = ttk.Label(topFrame, text='Total Length : --:--')
 length_label.pack(pady=5)
 
@@ -147,6 +160,8 @@ def show_details(play_song):
         audio = MP3(play_song)
         artist = audio['TPE1']
         title = audio['TIT2']
+        track = audio["TRCK"]
+        album = audio["TALB"]
         # titleArtist['text'] = artist + " - " + title
         total_length = audio.info.length
     else:
@@ -201,13 +216,26 @@ def play_music():
             audio = MP3(play_it)
             artist = (audio['TPE1'][0])
             title = (audio['TIT2'][0])
-            # pict = audio['APIC:'].data
+            track = (audio["TRCK"][0])
+            album = (audio["TALB"][0])
+            # pict = audio['APIC'].data
             # imPIL = CoverArt.open(BytesIO(pict))
             # im = PhotoImage(imPIL)
-            # coverArt = ttk.Label(topframe, image=im)
+            # coverArt = ttk.Label(topFrame, image=im)
             # coverArt.pack()
+            cover = File(play_it)
+            artwork = cover.tags["APIC:"].data
+            with open('image.jpg', 'wb') as img:
+                img.write(artwork)
+            art = ttk.Label(topFrame)
+            image = PhotoImage(file="image.jpg")
+            art['image'] = image
+            art.pack(pady=20)
+
             titleArtist['text'] = artist + " - " + title
             statusbar['text'] = "Playing music" + ' - ' + os.path.basename(play_it)
+            trackAlbum['text'] = track + " - " + album
+
             show_details(play_it)
         except:
             tkinter.messagebox.showerror('File not found', 'Melody could not find the file. Please check again.')
@@ -243,8 +271,6 @@ def prev_song():
 def repeat_music():
     play_music()
     statusbar['text'] = "Restarting Music"
-
-
 
 
 def stop_music():
@@ -336,11 +362,10 @@ scale.set(70)  # implement the default value of scale when music player starts
 mixer.music.set_volume(0.7)
 scale.grid(row=0, column=2, pady=15, padx=30)
 
-
+new_canvas.pack()
 def on_closing():
     stop_music()
     root.destroy()
-
 
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
