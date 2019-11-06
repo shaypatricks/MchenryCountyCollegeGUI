@@ -46,7 +46,6 @@ playlist = []
 
 def browse_file():
     global filename_path
-    global directory
     filename_path = filedialog.askopenfilename()
     add_to_playlist(filename_path)
     mixer.music.queue(filename_path)
@@ -61,7 +60,7 @@ def add_to_playlist(filename):
     index += 1
 
 
-def director():
+def add_directory_to_playlist():
     try:
         global index
         directory = filedialog.askdirectory()
@@ -111,7 +110,7 @@ playlistbox.pack()
 addBtn = ttk.Button(leftFrame, text="+ Add", command=browse_file)
 addBtn.pack(side=LEFT)
 
-director_Button = ttk.Button(leftFrame, text="+ Directory", command=director)
+director_Button = ttk.Button(leftFrame, text="+ Playlist", command=add_directory_to_playlist)
 director_Button.pack(side=LEFT)
 
 
@@ -213,21 +212,32 @@ def play_music():
         except:
             tkinter.messagebox.showerror('File not found', 'Melody could not find the file. Please check again.')
 
+# Added by Steffen Hayes
+# Creating a command to play next or go back a song in a directory for the playlist
+
 
 def next_song():
-    global index
-    index += 1
-    mixer.music.load(filename_path)
-    mixer.music.play()
-    statusbar['text'] = "Playing Next Song"
+    try:
+        global index
+        selected_song = playlistbox.curselection()
+        selected_song = int(selected_song[0])
+        play_it = playlist[selected_song]
+        mixer.music.load(play_it)
+        play_music()
+        statusbar['text'] = "Playing Next Song"
+    except:
+        tkinter.messagebox.showerror('File not found', 'Melody could not load the next file. Please check again.')
 
 
 def prev_song():
-    global index
-    index -= 1
-    mixer.music.load(filename_path)
-    mixer.music.play()
-    statusbar['text'] = "Playing Previous Song"
+    try:
+        global index
+        index -= 1
+        mixer.music.load(playlist)
+        mixer.music.play()
+        statusbar['text'] = "Playing Previous Song"
+    except:
+        tkinter.messagebox.showerror('File not found', 'Melody could not load the previous file. Please check again.')
 
 
 def repeat_music():
