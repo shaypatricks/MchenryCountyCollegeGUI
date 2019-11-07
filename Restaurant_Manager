@@ -1,0 +1,193 @@
+from tkinter import *
+import random
+import time
+
+root = Tk()
+root.configure(bg="antique white")
+root.geometry("1600x800+0+0")
+root.title("Restaurant Management")
+# Frames
+
+topFrame = Frame(root, width=1600, height=50, bg="white", relief=SUNKEN)
+topFrame.pack(side=TOP)
+
+midFrame = Frame(root, width=800, height=700, bg="white",  relief=SUNKEN)
+midFrame.pack(side=LEFT)
+
+bottomFrame = Frame(root, width=400, height=700, bg="white",  relief=SUNKEN)
+bottomFrame.pack(side=RIGHT)
+# Title Label and Time Variable
+localtime = time.asctime(time.localtime(time.time()))
+restaurant_info = Label(topFrame, font=('arial', 50, 'bold'), text="Restaurant Management Systems", fg="Steel Blue", bd=10, anchor='w').grid(row=0, column=0)
+current_time = Label(topFrame, font=('arial', 20, 'bold'), text=localtime, fg="Steel Blue", bd=10, anchor='w').grid(row=1, column=0)
+
+
+# Entry and StringVARS
+text_Input = StringVar()
+operator = ""
+
+txtDisplay = Entry(bottomFrame, font=('arial', 20, 'bold'), textvariable=text_Input, bd=10, insertwidth=4, justify='right').grid(columnspan=4)
+
+
+# Button Click Function
+def btn_click(num):
+    global operator
+    operator = operator + str(num)
+    text_Input.set(operator)
+
+
+def display_clear():
+    global operator
+    operator = ""
+    text_Input.set("")
+
+
+def total_input():
+    global operator
+    sums = str(eval(operator))
+    text_Input.set(sums)
+    operator = ""
+
+
+# numerical & Operator Buttons
+btn7 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='7', bg="antique white",  command=lambda: btn_click(7)).grid(row=2, column=0)
+btn8 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='8', bg="antique white", command=lambda: btn_click(8)).grid(row=2, column=1)
+btn9 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='9', bg="antique white", command=lambda: btn_click(9)).grid(row=2, column=2)
+addition = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='+', bg="antique white", command=lambda: btn_click('+')).grid(row=2, column=3)
+
+btn4 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='4', bg="antique white", command=lambda: btn_click(4)).grid(row=3, column=0)
+btn5 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='5', bg="antique white", command=lambda: btn_click(5)).grid(row=3, column=1)
+btn6 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='6', bg="antique white", command=lambda: btn_click(6)).grid(row=3, column=2)
+subtraction = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='-', bg="antique white", command=lambda: btn_click('-')).grid(row=3, column=3)
+
+btn1 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='1', bg="antique white", command=lambda: btn_click(1)).grid(row=4, column=0)
+btn2 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='2', bg="antique white", command=lambda: btn_click(2)).grid(row=4, column=1)
+btn3 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='3', bg="antique white", command=lambda: btn_click(3)).grid(row=4, column=2)
+multiply = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='*', bg="antique white", command=lambda: btn_click('*')).grid(row=4, column=3)
+
+clear = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='C', bg="antique white", command= display_clear).grid(row=5, column=1)
+btn0 = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='0', bg="antique white", command=lambda: btn_click(0)).grid(row=5, column=0)
+equal = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='=', bg="antique white", command=total_input).grid(row=5, column=2)
+division = Button(bottomFrame, padx=16, pady=16, bd=8, fg='Steel Blue', font=('arial', 20, 'bold'), text='/', bg="antique white", command=lambda: btn_click('/')).grid(row=5, column=3)
+
+# restaurant labels and variables
+
+rand = StringVar()
+chicken = StringVar()
+fries = StringVar()
+steak = StringVar()
+burger = StringVar()
+salad = StringVar()
+drink = StringVar()
+SubTotal = StringVar()
+Tax = StringVar()
+total = StringVar()
+Service_Charge = StringVar()
+CostOfMeal = StringVar()
+
+References = Label(midFrame, font=('arial', 16, 'bold'), text="References", bd=16, anchor='w').grid(row=0, column=0)
+txtReferences = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=rand, bd=10, insertwidth=4, justify='right').grid(row=0, column=1)
+
+Fries = Label(midFrame, font=('arial', 16, 'bold'), text="Fries", bd=16, anchor='w').grid(row=1, column=0)
+txtFries = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=fries, bd=10, insertwidth=4, justify='right').grid(row=1, column=1)
+
+Chicken = Label(midFrame, font=('arial', 16, 'bold'), text="Chicken", bd=16, anchor='w').grid(row=2, column=0)
+txtChicken = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=chicken, bd=10, insertwidth=4, justify='right').grid(row=2, column=1)
+
+Steak = Label(midFrame, font=('arial', 16, 'bold'), text="Steak", bd=16, anchor='w').grid(row=3, column=0)
+txtSteak = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=steak, bd=10, insertwidth=4, justify='right').grid(row=3, column=1)
+
+Salad = Label(midFrame, font=('arial', 16, 'bold'), text="Salad", bd=16, anchor='w').grid(row=4, column=0)
+txtSalad = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=salad, bd=10, insertwidth=4, justify='right').grid(row=4, column=1)
+
+Burger = Label(midFrame, font=('arial', 16, 'bold'), text="Burger",  bd=16, anchor='w').grid(row=5, column=0)
+txtBurger = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=burger, bd=10, insertwidth=4, justify='right').grid(row=5, column=1)
+
+# Services
+
+Drink = Label(midFrame, font=('arial', 16, 'bold'), text="Drink", bd=16, anchor='w').grid(row=0, column=2)
+txtDrink = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=drink, bd=10, insertwidth=4, justify='right').grid(row=0, column=3)
+
+costOfMeal = Label(midFrame, font=('arial', 16, 'bold'), text="Total Cost of Meal", bd=16, anchor='w').grid(row=1, column=2)
+txtCostOfMeal = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=CostOfMeal, bd=10, insertwidth=4, justify='right').grid(row=1, column=3)
+
+
+ServiceCharge = Label(midFrame, font=('arial', 16, 'bold'), text="Service Charge", bd=16, anchor='w').grid(row=2, column=2)
+txtServiceCharge = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=Service_Charge, bd=10, insertwidth=4, justify='right').grid(row=2, column=3)
+
+StateTax = Label(midFrame, font=('arial', 16, 'bold'), text="State Tax", bd=16, anchor='w').grid(row=3, column=2)
+txtStateTax = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=Tax, bd=10, insertwidth=4, justify='right').grid(row=3, column=3)
+
+subTotal = Label(midFrame, font=('arial', 16, 'bold'), text="Sub-Total", bd=16, anchor='w').grid(row=4, column=2)
+txtSubTotal = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=SubTotal, bd=10, insertwidth=4, justify='right').grid(row=4, column=3)
+
+Total = Label(midFrame, font=('arial', 16, 'bold'), text="Total Cost", bd=16, anchor='w').grid(row=5, column=2)
+txtTotal = Entry(midFrame, font=('arial', 16, 'bold'), textvariable=total, bd=10, insertwidth=4, justify='right').grid(row=5, column=3)
+
+# service Buttons and functions
+
+
+def Ref():
+    x = random.randint(12908, 50876)
+    random_ref = str(x)
+    rand.set(random_ref)
+
+    CoF = float(fries.get())
+    CoST = float(steak.get())
+    CoB = float(burger.get())
+    CoSA = float(salad.get())
+    CoD = float(drink.get())
+    CoC = float(chicken.get())
+
+
+    FriesCost = CoF * 0.99
+    DrinkCost = CoD * 1.00
+    BurgerCost = CoB * 3.50
+    SteakCost = CoST * 5.35
+    SaladCost = CoSA * 4.00
+    ChickenCost = CoC * 0.99
+
+    cost_of_meal = "$", str('%.2f' % (FriesCost + DrinkCost + BurgerCost + SteakCost + SaladCost + ChickenCost))
+
+    my_state_tax = ((FriesCost + DrinkCost + BurgerCost + SteakCost + SaladCost + ChickenCost) * 0.7)
+
+    my_total = (FriesCost + DrinkCost + BurgerCost + SteakCost + SaladCost + ChickenCost)
+
+    ser_Charge = ((FriesCost + DrinkCost + BurgerCost + SteakCost + SaladCost + ChickenCost)/99)
+
+    Service = "$", str('%.2f' % ser_Charge)
+
+    TotalCost = "$", str('%.2f' % (my_state_tax + my_total + ser_Charge))
+
+    paidTax = "$", str('%.2f' % my_state_tax)
+
+    Service_Charge.set(Service)
+    CostOfMeal.set(cost_of_meal)
+    Tax.set(paidTax)
+    SubTotal.set(cost_of_meal)
+    total.set(TotalCost)
+
+
+def exitq():
+    root.destroy()
+
+
+def reset():
+    rand.set("")
+    chicken.set("")
+    fries.set("")
+    steak.set("")
+    burger.set("")
+    salad.set("")
+    drink.set("")
+    SubTotal.set("")
+    Tax.set("")
+    total.set("")
+
+
+totalBtn = Button(midFrame, padx=16, pady=16, bd=16, fg='black', font=('arial', 20, 'bold'), width=10, text='Total', bg="steel blue", command=Ref).grid(row=7, column=1)
+
+quitProgram = Button(midFrame, padx=16, pady=16, bd=16, fg='black', font=('arial', 20, 'bold'), width=10, text='Exit', bg="steel blue", command=exitq).grid(row=7, column=2)
+
+resetProgram = Button(midFrame, padx=16, pady=16, bd=16, fg='black', font=('arial', 20, 'bold'), width=10, text='Reset', bg="steel blue", command=exitq).grid(row=7, column=3)
+root.mainloop()
