@@ -162,6 +162,7 @@ def show_details(play_song):
         title = audio['TIT2']
         track = audio["TRCK"]
         album = audio["TALB"]
+        pict = audio['APIC']
         # titleArtist['text'] = artist + " - " + title
         total_length = audio.info.length
     else:
@@ -218,7 +219,7 @@ def play_music():
             title = (audio['TIT2'][0])
             track = (audio["TRCK"][0])
             album = (audio["TALB"][0])
-            # pict = audio['APIC'].data
+            # pict = (audio['APIC'][0].data)
             # imPIL = CoverArt.open(BytesIO(pict))
             # im = PhotoImage(imPIL)
             # coverArt = ttk.Label(topFrame, image=im)
